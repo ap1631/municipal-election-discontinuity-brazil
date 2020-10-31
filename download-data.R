@@ -161,7 +161,6 @@ colnames(profile_2016)
 # voter_affiliation <- voter_affiliation("pt", "rj")
 # voter_affiliation_2000 <- voter_affiliation(2000,uf="rio de janeiro")
 # voter_affiliation_2016 <- voter_affiliation(2016)
-# 
 # #### Get colnames
 # #### Ger relevant info
 # 
