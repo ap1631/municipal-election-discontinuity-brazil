@@ -1,0 +1,402 @@
+---
+title: "test-electoraldata"
+author: "Ana Paula Pellegrino"
+date: "10/20/2020"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Working with electoral data in Brazil
+
+-> pacote electionsBR
+-> para população ribge
+
+```{r}
+#install.packages("electionsBR")
+library(electionsBR)
+library(tidyverse)
+citation('electionsBR')
+
+
+
+help("electionsBR-package")
+
+df <- candidate_local(year=2004)
+```
+
+
+```{r Resultado votacao}
+
+df_resultado <- vote_mun_zone_local(year=2000)
+voters <- voter_profile(2004)
+
+details <- details_mun_zone_local(2004)
+
+
+df_resultado_pref <- df_resultado %>% filter(DESCRICAO_CARGO=="PREFEITO")
+
+df_resultado_pref_primeiroturno <- df_resultado_pref %>% filter(NUM_TURNO==1) %>% filter(DESC_SIT_CAND_TOT=="Eleito")
+```
+
+
+```{r Dados eleitores}
+# Carrega dados de eleitores
+df_eleitores <- details_mun_zone_local(2016)
+
+# Filtra por eleição para prefeito
+df_eleitores_pref <- df_eleitores %>% filter(DESCRICAO_CARGO=="PREFEITO")
+
+# Calcula quantidade de eleitores aptos
+df_eleitores_treat <- df_eleitores_pref %>% 
+  filter(DESCRICAO_CARGO== "PREFEITO") %>% 
+  filter(NUM_TURNO==1) %>% 
+  group_by(CODIGO_MUNICIPIO) %>% 
+  summarise(aptos_total_mun = sum(QTD_APTOS)) %>% 
+  mutate(treatment = as.numeric(aptos_total_mun>200000))
+
+# Junta tabelas
+df_eleitores_pref <- left_join(x=df_eleitores_pref, y=df_eleitores_treat, by="CODIGO_MUNICIPIO")
+```
+
+
+```{r Contas Dados eleitores}
+
+df_eleitores_pref %>% filter(NUM_TURNO == 2) %>% group_by(CODIGO_MUNICIPIO) %>% count() #43
+df_eleitores_pref %>% filter(NUM_TURNO == 1) %>% group_by(CODIGO_MUNICIPIO) %>% count() #5560	
+
+df_eleitores_pref %>% filter(NUM_TURNO == 1) %>% filter(aptos_total_mun >= 200000) %>% group_by(CODIGO_MUNICIPIO) %>% count() #67	
+
+df_eleitores_pref %>% filter(NUM_TURNO == 1) %>% filter(aptos_total_mun < 200000) %>% group_by(CODIGO_MUNICIPIO) %>% count() #5,493	
+
+df_eleitores_pref %>% 
+  filter(NUM_TURNO == 1) %>% 
+  group_by(CODIGO_MUNICIPIO) %>% 
+  filter(aptos_total_mun>100000) %>% 
+  filter(aptos_total_mun<300000) %>% 
+  ggplot(aes(x=aptos_total_mun)) +
+  geom_histogram(binwidth = 10000) +
+  scale_x_continuous(labels = scales::comma)
+
+
+
+
+```
+
+
+```{r}
+
+df_eleitores_pref %>% 
+  filter(NUM_TURNO == 1) %>% 
+  group_by(CODIGO_MUNICIPIO) %>% 
+  filter(aptos_total_mun>100000) %>% 
+  filter(aptos_total_mun<300000) %>% 
+  ggplot(aes(x =aptos_total_mun, y= QTD_COMPARECIMENTO/QTD_APTOS, group=treatment)) + 
+  geom_point() +
+  scale_x_continuous(labels = scales::comma) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(title = "Efeito do Segundo Turno no comparecimento em Primeiro turno 2004", 
+       y = "Comparecimento", 
+       x = "Aptos") +
+  geom_smooth(method = "lm", aes())
+
+ggsave(
+  filename = "rdd2004.png",
+  plot = last_plot())
+
+```
+
+```{r}
+
+df_eleitores_pref %>% 
+  filter(NUM_TURNO == 1) %>% 
+  group_by(CODIGO_MUNICIPIO) %>% 
+  filter(aptos_total_mun>100000) %>% 
+  filter(aptos_total_mun<300000) %>% 
+  ggplot(aes(x =aptos_total_mun, y= QTD_COMPARECIMENTO/QTD_APTOS, group=treatment)) + 
+  geom_point() +
+  scale_x_continuous(labels = scales::comma) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(title = "Efeito de Voto Direto no comparecimento em Primeiro turno", 
+       y = "Comparecimento", 
+       x = "Aptos") +
+  geom_smooth(method = "lm", aes())
+
+```
+
+
+```{r details of elections}
+
+## Download all voter data
+years <- seq(2000,2016, by=4)
+
+results <- tibble()
+
+for(i in years){
+  dat <- details_mun_zone_local(i)
+  dat <- dat %>% select(ANO_ELEICAO, NUM_TURNO, 
+                DESCRICAO_ELEICAO, 
+                SIGLA_UF, CODIGO_MUNICIPIO,
+                CODIGO_CARGO, DESCRICAO_CARGO, QTD_APTOS_TOT,
+                QTD_COMPARECIMENTO, QTD_ABSTENCOES,  QTD_VOTOS_NOMINAIS, QTD_VOTOS_BRANCOS,
+                QTD_VOTOS_NULOS, QTD_VOTOS_LEGENDA)
+  results <- rbind(results, dat)
+}
+
+
+```
+
+
+```{r}
+# Só prefeitos
+results_mayor <- 
+  results %>% 
+  filter(CODIGO_CARGO==11)
+
+#Só eleições gerais
+codigos_relevantes <- results_mayor %>% group_by(DESCRICAO_ELEICAO) %>% count() %>% tibble() %>% filter(n>200)
+codigos <- c(unique(codigos_relevantes$DESCRICAO_ELEICAO))
+
+results_mayor_normal <- tibble()
+
+for (i in codigos){
+  x<- results_mayor %>% filter(DESCRICAO_ELEICAO==i)
+  results_mayor_normal <- rbind(results_mayor_normal, x)
+}
+
+#histograma
+results_mayor_normal %>% 
+  filter(NUM_TURNO == 1) %>% 
+  group_by(CODIGO_MUNICIPIO) %>% 
+  filter(QTD_APTOS_TOT>100000) %>%
+  filter(QTD_APTOS_TOT<300000) %>%
+  ggplot(aes(x=QTD_APTOS_TOT)) +
+  geom_histogram(binwidth = 10000) +
+  scale_x_continuous(labels = scales::comma)
+
+
+
+```
+
+
+```{r Comparecimento}
+results_mayor_normal %>% 
+  mutate("treat" = as.numeric(QTD_APTOS_TOT>200000)) %>% 
+  filter(NUM_TURNO == 1) %>% 
+  group_by(CODIGO_MUNICIPIO) %>% 
+  filter(QTD_APTOS_TOT>130000) %>% 
+  #filter(QTD_APTOS_TOT<300000) %>% 
+  ggplot(aes(x = QTD_APTOS_TOT, y= QTD_COMPARECIMENTO/QTD_APTOS_TOT, group=treat)) + 
+  geom_point() +
+  facet_wrap(~ANO_ELEICAO)+
+  scale_x_continuous(labels = scales::comma) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(title = "Efeito da realização de segundo turno no comparecimento em primeiro turno ", 
+       subtitle = "Eleições 2000-2016",
+       y = "Comparecimento", 
+       x = "Aptos") +
+  geom_smooth(method = "lm",formula = y ~ x + I(x^2), aes())
+
+```
+
+```{r Votos nominais}
+results_mayor_normal %>% 
+  mutate("treat" = as.numeric(QTD_APTOS_TOT>200000)) %>% 
+  filter(NUM_TURNO == 1) %>% 
+  #filter(ANO_ELEICAO==2012) %>% 
+  group_by(CODIGO_MUNICIPIO) %>% 
+  filter(QTD_APTOS_TOT>100000) %>% 
+  #filter(QTD_APTOS_TOT<300000) %>% 
+  ggplot(aes(x = QTD_APTOS_TOT, y= QTD_VOTOS_NOMINAIS/QTD_APTOS_TOT, group=treat)) + 
+  geom_point() +
+  facet_wrap(~ANO_ELEICAO)+
+  scale_x_continuous(labels = scales::comma) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(title = "Efeito da realização de segundo turno em votos nominais em primeiro turno ", 
+       subtitle = "Eleições 2000-2016",
+       y = "Votos Nominais", 
+       x = "Aptos") +
+  geom_smooth(method = "lm",formula = y ~ x + I(x^2), aes())
+
+
+```
+
+```{r Regression discontinuity}
+results_mayor_normal_rdd <- results_mayor_normal %>% 
+  #filter(QTD_APTOS_TOT>100000) %>% 
+  mutate("nominal_perc" = QTD_VOTOS_NOMINAIS/QTD_APTOS_TOT) %>% 
+  mutate("turnout_perc" = QTD_COMPARECIMENTO/QTD_APTOS_TOT) %>% 
+  mutate("D" = ifelse(QTD_APTOS_TOT>=200000,1,0))
+
+rdd_nominais <- lm(nominal_perc ~ D + I(QTD_APTOS_TOT-200000) + I(QTD_APTOS_TOT-200000)^2 + factor(ANO_ELEICAO), data=results_mayor_normal_rdd)
+summary(rdd_nominais)
+
+rdd_turnout <- lm(turnout_perc ~ D + I(QTD_APTOS_TOT-200000) + I(QTD_APTOS_TOT-200000)^2 + factor(ANO_ELEICAO), data=results_mayor_normal_rdd)
+summary(rdd_turnout)
+
+```
+
+
+
+```{r rd por ano}
+
+data_2000 <- results_mayor_normal_rdd %>% filter(ANO_ELEICAO==2000)
+data_2004 <- results_mayor_normal_rdd %>% filter(ANO_ELEICAO==2004)
+data_2008 <- results_mayor_normal_rdd %>% filter(ANO_ELEICAO==2008)
+data_2012 <- results_mayor_normal_rdd %>% filter(ANO_ELEICAO==2012)
+data_2016 <- results_mayor_normal_rdd %>% filter(ANO_ELEICAO==2016)
+
+
+rdd_nominais_2000 <- lm(nominal_perc ~ D + I(QTD_APTOS_TOT-200000) + I(QTD_APTOS_TOT-200000)^2, data=data_2000)
+rdd_nominais_2004 <- lm(nominal_perc ~ D + I(QTD_APTOS_TOT-200000) + I(QTD_APTOS_TOT-200000)^2, data=data_2004)
+rdd_nominais_2008 <- lm(nominal_perc ~ D + I(QTD_APTOS_TOT-200000) + I(QTD_APTOS_TOT-200000)^2, data=data_2008)
+rdd_nominais_2012 <- lm(nominal_perc ~ D + I(QTD_APTOS_TOT-200000) + I(QTD_APTOS_TOT-200000)^2, data=data_2012)
+rdd_nominais_2016 <- lm(nominal_perc ~ D + I(QTD_APTOS_TOT-200000) + I(QTD_APTOS_TOT-200000)^2, data=data_2016)
+ 
+summary(rdd_nominais_2000)#significant 8.992e-02
+summary(rdd_nominais_2004)#significant 1.260e-01
+summary(rdd_nominais_2008)#significant 1.257e-01
+summary(rdd_nominais_2012)#significant 1.182e-01
+summary(rdd_nominais_2016)#significant 1.626e-01
+
+rdd_turnout_2000 <- lm(turnout_perc ~ D + I(QTD_APTOS_TOT-200000) + I(QTD_APTOS_TOT-200000)^2, data=data_2000)
+rdd_turnout_2004 <- lm(turnout_perc ~ D + I(QTD_APTOS_TOT-200000) + I(QTD_APTOS_TOT-200000)^2, data=data_2004)
+rdd_turnout_2008 <- lm(turnout_perc ~ D + I(QTD_APTOS_TOT-200000) + I(QTD_APTOS_TOT-200000)^2, data=data_2008)
+rdd_turnout_2012 <- lm(turnout_perc ~ D + I(QTD_APTOS_TOT-200000) + I(QTD_APTOS_TOT-200000)^2, data=data_2012)
+rdd_turnout_2016 <- lm(turnout_perc ~ D + I(QTD_APTOS_TOT-200000) + I(QTD_APTOS_TOT-200000)^2, data=data_2016)
+
+summary(rdd_turnout_2000)#significant 8.221e-02
+summary(rdd_turnout_2004)#significant 1.137e-01
+summary(rdd_turnout_2008)#significant 1.069e-01
+summary(rdd_turnout_2012)#significant 7.917e-02
+summary(rdd_turnout_2016)#significant 9.996e-02
+
+```
+
+2000-2012
+[1] "DATA_GERACAO"               "HORA_GERACAO"              
+ [3] "ANO_ELEICAO"                "NUM_TURNO"                 
+ [5] "DESCRICAO_ELEICAO"          "SIGLA_UF"                  
+ [7] "SIGLA_UE"                   "CODIGO_MUNICIPIO"          
+ [9] "NOME_MUNICIPIO"             "NUMERO_ZONA"               
+[11] "CODIGO_CARGO"               "DESCRICAO_CARGO"           
+[13] "QTD_APTOS"                  "QTD_SECOES"                
+[15] "QTD_SECOES_AGREGADAS"       "QTD_APTOS_TOT"             
+[17] "QTD_SECOES_TOT"             "QTD_COMPARECIMENTO"        
+[19] "QTD_ABSTENCOES"             "QTD_VOTOS_NOMINAIS"        
+[21] "QTD_VOTOS_BRANCOS"          "QTD_VOTOS_NULOS"           
+[23] "QTD_VOTOS_LEGENDA"          "QTD_VOTOS_ANULADOS_APU_SEP"
+[25] "DATA_ULT_TOTALIZACAO"       "HORA_ULT_TOTALIZACAO"     
+
+
+2016
+
+ [1] "DATA_GERACAO"         "HORA_GERACAO"         "ANO_ELEICAO"          "COD_TIPO_ELEICAO"     "NOME_TIPO_ELEICAO"   
+ [6] "NUM_TURNO"            "COD_ELEICAO"          "DESCRICAO_ELEICAO"    "DATA_ELEICAO"         "ABRANGENCIA"         
+[11] "SIGLA_UF"             "SIGLA_UE"             "NOME_UE"              "CODIGO_MUNICIPIO"     "NOME_MUNICIPIO"      
+[16] "NUMERO_ZONA"          "CODIGO_CARGO"         "DESCRICAO_CARGO"      "QTD_APTOS"            "QTD_SECOES"          
+[21] "QTD_SECOES_AGREGADAS" "QTD_APTOS_TOT"        "QTD_SECOES_TOT"       "QTD_COMPARECIMENTO"   "QTD_ABSTENCOES"      
+[26] "TRANSITO"             "QTD_VOTOS_NOMINAIS"   "QTD_VOTOS_BRANCOS"    "QTD_VOTOS_NULOS"      "QTD_VOTOS_LEGENDA"   
+[31] "QTD_VOTOS_PENDENTES"  "QTD_VOTOS_ANULADOS"   "HORA_ULT_TOTALIZACAO" "DATA_ULT_TOTALIZACAO"
+
+
+
+
+## Working with PNADc
+
+```{r}
+install.packages("sidrar")
+library(sidrar)
+
+library(tidyverse)
+
+info_sidra()
+
+pop_estimada <- get_sidra(x=6579, period = c("2001", "2020"), geo ="City" )
+
+#PNAD Continua Trimestral
+
+pop_cor <- get_sidra(x=6403, period= "all", geo="City")
+
+
+#Rio de Janeiro
+pop_cor %>% 
+  filter(`Município (Código)`==	3304557) %>% 
+  filter(`Variável (Código)`== 606) %>% 
+  select(Município, `Município (Código)`, `Trimestre (Código)`, `Cor ou raça`, Valor) %>% 
+  filter(`Cor ou raça` == "Total")
+
+
+#Porto Velho
+pop_cor %>% 
+  filter(`Município (Código)`==	1100205) %>% 
+  filter(`Variável (Código)`== 606) %>% 
+  select(Município, `Município (Código)`, `Trimestre (Código)`, `Cor ou raça`, Valor) %>% 
+  filter(`Cor ou raça` == "Total")
+
+
+#São Paulo
+pop_cor %>% 
+  filter(`Município (Código)`==	5300108) %>% 
+  filter(`Variável (Código)`== 606) %>% 
+  select(Município, `Município (Código)`, `Trimestre (Código)`, `Cor ou raça`, Valor) %>% 
+  filter(`Cor ou raça` == "Total")
+```
+1100205	== Porto Velho
+1200401 == Rio Branco
+1302603 == Manaus
+1400100 == Boa Vista
+1501402 == Belém PA
+1600303 == Macapá
+1721000 == Palmas
+2111300 == São Luís
+2211001 == Teresina
+2304400 == Fortaleza
+2408102 == Natal
+2507507 == João Pessoa
+2611606 == Recife
+2704302 == Maceió
+2800308 == Aracajú
+2927408 == Salvador
+3106200 == Belo Horizonte
+3205309 == Vitória
+3304557 == Rio de Janeiro
+3550308 == São Paulo
+4106902 == Curitiba
+4205407 == Florianópolis
+4314902 == Porto Alegre
+5002704 == Campo Grande
+5103403 == Cuiabá
+5208707 == Goiânia
+5300108 == Brasília
+
+
+```{r}
+#201201
+pop_cor_201201 <- pop_cor %>% 
+  filter(`Trimestre (Código)`==	201201) %>% 
+  filter(`Variável (Código)`== 606) %>% 
+  select(Município, `Município (Código)`, `Trimestre (Código)`, `Cor ou raça`, Valor) %>% 
+  filter(`Cor ou raça` == "Total")
+
+
+
+#202001
+pop_cor_202001 <- pop_cor %>% 
+  filter(`Trimestre (Código)`==	202001) %>% 
+  filter(`Variável (Código)`== 606) %>% 
+  select(Município, `Município (Código)`, `Trimestre (Código)`, `Cor ou raça`, Valor) %>% 
+  filter(`Cor ou raça` == "Total")
+
+pop_cor_var <- left_join(x=pop_cor_201201, y=pop_cor_202001, by=c("Município", "Município (Código)"))
+
+pop_cor_var <- pop_cor_var %>% 
+  mutate("delta.total"=Valor.y-Valor.x) %>% 
+  mutate("delta-perc"= as.numeric(delta.total/Valor.x))
+
+pop_cor_var %>% select(Município, delta.total, `delta-perc`) %>% arrange(`delta-perc`)
+
+```
+
