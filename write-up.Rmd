@@ -1,0 +1,109 @@
+---
+title: "Electoral Design and Politician's Incentives to Enhance in Voter's Policy Priorities"
+subtitle: "Exploring a Discontinuity in Electoral Rules for Mayor's Elections in Brazil"
+author: "Ana Paula Pellegrino"
+date: "10/30/2020"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, include=FALSE)
+```
+
+```{r install packages}
+library(electionsBR)
+library(tidyverse)
+
+```
+
+
+```{r load data}
+## Preloaded data
+load("vote_turnout_2000_2016.rds") ## Voter turnout
+#load("vote_results_2000_2016.rds") ## Voter results
+```
+
+
+
+```{r install packages and load data}
+
+```
+
+
+```{r}
+# Just mayors
+results_mayor <- 
+  df_resultado %>% 
+  filter(CODIGO_CARGO==11)
+
+# Just general elections
+relevant_election_codes <- results_mayor %>% 
+  group_by(DESCRICAO_ELEICAO) %>% 
+  count() %>% 
+  tibble() %>% 
+  filter(n>200)
+codes <- c(unique(relevant_election_codes$DESCRICAO_ELEICAO))
+
+results_mayor_general <- tibble()
+
+for (i in codigos){
+  x<- results_mayor %>% filter(DESCRICAO_ELEICAO==i)
+  results_mayor_general <- rbind(results_mayor_general, x)
+}
+
+
+
+```
+
+
+## Introduction
+
+
+## Political Competition is the crux
+
+
+
+
+## Research Design
+
+
+
+#### About RDD
+The main idea behind this research design (Angrist & Lavy, 1999; Black,1999;Van DerKlaauw,2002)is thatmunicipalities justbelow the cutoff size (with a single ballot) make good comparisons with those just above the cutoff (where the dual ballot applies). This strategy is deemed preferable to other non-experimental methods because if the units of the analysis (in our case the Italian municipalities) are unable to manipulate precisely the forcing variable (their size), the variation in treatment (changes in local electoral rules) around the threshold is randomized as if the municipalities had been randomly drawn just below or just above the threshold (see Lee, 2008).
+
+(Page 27). Barone & De Blasio, 2013
+
+#### Baseline covariates
+
+Need to report there are no jumps in other policies that could be influencing the outcome
+
+- Income per capita
+- Public expenditure per capita
+
+#### Model
+
+
+$$ VoterParticipation_m = \beta T_m + g(Z_m) + \sum_{t=starting year}^{end year} \lambda_{t} D_t + \epsilon_m $$
+
+
+
+$T_m$ is the dummy treatment variable that takes the value of 1 when $Z_m \geq 0$ and 0 otherwise.
+$Z_m$ is the forcing variable and is equal to $POP_m - 200000.00$
+
+
+$$ ElectoralCompetition_m =  $$
+
+$$ PolicyOutput_m =  $$
+
+$$ PolicyOutcome_m =  $$
+
+## Results
+
+
+
+## Discussion
+
+
+## Conclusion
+
+- Implications
