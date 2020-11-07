@@ -1,109 +1,564 @@
 ---
-title: "Electoral Design and Politician's Incentives to Enhance in Voter's Policy Priorities"
-subtitle: "Exploring a Discontinuity in Electoral Rules for Mayor's Elections in Brazil"
+title: "Electoral Design: Politician and Voter Incentives to Participate in Elections"
+subtitle: "Exploring a Discontinuity in General Mayor's Elections in Brazil"
 author: "Ana Paula Pellegrino"
-date: "10/30/2020"
+date: "Fall 2020"
+header-includes:
+    - \usepackage{setspace}
+    - \doublespacing
 output: pdf_document
 ---
 
 ```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE, include=FALSE)
+knitr::opts_chunk$set(echo = FALSE)
 ```
 
-```{r install packages}
+```{r load packages, include=FALSE}
+library(stargazer)
+require(papeR)
 library(electionsBR)
 library(tidyverse)
-
+require(lubridate)
+library(knitr)
 ```
 
-
-```{r load data}
+```{r load data, include=FALSE}
 ## Preloaded data
-load("vote_turnout_2000_2016.rds") ## Voter turnout
-#load("vote_results_2000_2016.rds") ## Voter results
+load("vote_results_mayor_general_2000_2016.rds") # Result per candidate just for mayors in general elections 
+load("turnout_mayor_general_2000_2016.rds") # turnout of votes per city
+load("n_candidates_cities_2000_2016.rds") # N of candidates for mayor in general elections
 ```
 
+```{r transform data, include=FALSE}
+# Olhar impact in competitivity indicators
 
-
-```{r install packages and load data}
-
+## Create dataset
+vote_turnout_candidates <- 
+  left_join(turnout_mayor_general, 
+            n_candidates_cities, 
+            by=c("ANO_ELEICAO", "CODIGO_MUNICIPIO")) %>% 
+  filter(QTD_APTOS_TOT>100000, NUM_TURNO==1) %>% 
+  mutate("D" = ifelse(QTD_APTOS_TOT>=200000,1,0),
+         "registered_voters" = QTD_APTOS_TOT,
+         "votes_cast_total" = QTD_COMPARECIMENTO,
+         "votes_cast_pct" = votes_cast_total/registered_voters,
+         "votes_nominal" = QTD_VOTOS_NOMINAIS,
+         "votes_nominal_pct" = votes_nominal/registered_voters,
+         "valid_votes" = registered_voters - QTD_ABSTENCOES - QTD_VOTOS_NULOS,
+         "valid_votes_pct" = valid_votes/registered_voters)
 ```
 
+```{r rdds, include=FALSE}
+## Set up models
 
-```{r}
-# Just mayors
-results_mayor <- 
-  df_resultado %>% 
-  filter(CODIGO_CARGO==11)
+# Impacto em n de candidatos
 
-# Just general elections
-relevant_election_codes <- results_mayor %>% 
-  group_by(DESCRICAO_ELEICAO) %>% 
-  count() %>% 
-  tibble() %>% 
-  filter(n>200)
-codes <- c(unique(relevant_election_codes$DESCRICAO_ELEICAO))
+rdd_candidates_general <- lm(n ~ D + I(QTD_APTOS_TOT-200000)^2, data=vote_turnout_candidates)
+# summary(rdd_candidates_general)
+## D = -1.280e+00  5.236e-01  -2.444   0.0147 *
 
-results_mayor_general <- tibble()
+rdd_candidates <- lm(n ~ D + I(QTD_APTOS_TOT-200000)^2 + factor(ANO_ELEICAO), data=vote_turnout_candidates)
+# summary(rdd_candidates)
+## D = -1.425e+00  5.222e-01  -2.728  0.00644 **
 
-for (i in codigos){
-  x<- results_mayor %>% filter(DESCRICAO_ELEICAO==i)
-  results_mayor_general <- rbind(results_mayor_general, x)
-}
+rdd_candidates_states <- lm(n ~ D + I(QTD_APTOS_TOT-200000)^2 + factor(ANO_ELEICAO) + factor(SIGLA_UF), data=vote_turnout_candidates)
+# summary(rdd_candidates_states)
+## D= -1.254e+00  4.902e-01  -2.558 0.010625 *
 
+# Olhar impact em otes cast
 
+rdd_votescast_general <- lm(votes_cast_pct ~ D + I(registered_voters-200000)^2, data=vote_turnout_candidates)
+# summary(rdd_votescast_general)
+## D = 2.434e-02  5.753e-03   4.231 2.48e-05 ***
+
+rdd_votescast <- lm(votes_cast_pct ~ D + I(registered_voters-200000)^2 + factor(ANO_ELEICAO), data=vote_turnout_candidates)
+# summary(rdd_votescast)
+## D = 1.920e-02  5.114e-03   3.754 0.000181 ***  
+
+rdd_votescast_states <- lm(votes_cast_pct ~ D + I(registered_voters-200000)^2 + factor(ANO_ELEICAO) + factor(SIGLA_UF), data=vote_turnout_candidates)
+# summary(rdd_votescast_states)
+## D = 1.920e-02  5.114e-03   3.754 0.000181 ***
+
+# Olhar impact em votos validos
+rdd_validvotes_general <- lm(valid_votes_pct ~ D + I(registered_voters-200000)^2, data=vote_turnout_candidates)
+# summary(rdd_validvotes_general)
+## D = 2.284e-02  8.663e-03   2.637  0.00846 **
+
+rdd_validvotes <- lm(valid_votes_pct ~ D + I(registered_voters-200000)^2 + factor(ANO_ELEICAO), data=vote_turnout_candidates)
+# summary(rdd_validvotes)
+## D = 1.276e-02  6.847e-03   1.864   0.0625 .
+
+rdd_validvotes_states <- lm(valid_votes_pct ~ D + I(registered_voters-200000)^2 + factor(ANO_ELEICAO) + factor(SIGLA_UF), data=vote_turnout_candidates)
+# summary(rdd_validvotes_states)
+## 1.069e-02  6.306e-03   1.696 0.090134 .
+
+# Olhar impact em nominal votes
+rdd_nominalvotes_general <- lm(votes_nominal_pct ~ D + I(registered_voters-200000)^2, data=vote_turnout_candidates)
+# summary(rdd_nominalvotes_general)
+# D = 2.376e-02  9.816e-03   2.420   0.0156 *
+
+rdd_nominalvotes <- lm(votes_nominal_pct ~ D + I(registered_voters-200000)^2 + factor(ANO_ELEICAO), data=vote_turnout_candidates)
+# summary(rdd_nominalvotes)
+# D = 1.136e-02  7.573e-03   1.500   0.1339
+
+rdd_nominalvotes_states <- lm(votes_nominal_pct ~ D + I(registered_voters-200000)^2 + factor(ANO_ELEICAO) + factor(SIGLA_UF), data=vote_turnout_candidates)
+# summary(rdd_nominalvotes_states)
+# D = 8.328e-03  6.647e-03   1.253 0.210434
 
 ```
-
 
 ## Introduction
 
+The city is the locus of some of the crucial decisions that shape not only the landscape of where we live, but our very lives themselves. Be it by taxing, zoning or exerting other kinds of policing and regulatory power, local governments interfere directly with how we experience the places we live in. In many policy areas, it is also the city government that is responsible for delivering key services and public goods, from the most sophisticated, like public health, to the more mundane, like residue collection.
 
-## Political Competition is the crux
+Indeed, if we are to follow the expectation of classical economic explanations for the flourishment of cities, we can understand their delicate equilibria as determinant of whether they function as growth machines (Logan & Molotoch, 1976), set in a path of a virtuous cycle, or as shrinking cities. This issue is not particular to the United States, but finds similar patterns worldwide. All of this should make politics at the local level raise in salience and electoral practices, one would expect, to be under constant scrutiny. Yet the theme is still underexplored in the comparative politics literature.
 
+Political theory posits that specific electoral design has great impact on the process' competitiveness and popular participation, directly influencing results. Thus understanding how these rules work in practice is key to evaluate if a system is actually promoting the desired level of competition between candidates and generating engagement among the elctorate.
 
+This paper explores the impact of runoffs on measures of both electoral competitiveness and on voter participation, exploring a particular design in Brazilian electoral rules. In the South American Country, only cities with more than 200 thousand registered voters have runoffs between the two first placed candidates when no one secured a majority of the votes. Cities with less voters have only a single electoral round. According to political theory, the runoff design would increase competitiveness, measured as the number of candidates running in any given election, while also increasing voter turnout, due to popular perception that their vote "counts" more in a bigger dispute. Ultimately, the enhanced competition, the theory poists, can make politicians more accountable to voters, creating a virtuous democratic cycle where city politics are responsive to the population. 
 
+While one may argue that people can be motivated to "vote with their feet" and move cities -- tending to move cities whenever there is a place with policies more aligned with their preferences --, this research design's validity rests on the assumption that city leadership and federal legislative, who is responsible for these electoral rules, are not capable of manipulating the actual size of the electorate in cities. Thus this cutoff at 200 thousand becomes as good as random assignment to a treatment and control group right around the cutoff.
+
+In order to measure the impact of the electoral design on our outcomes of interest, I will explore a Regression Discontinuity Design, reporting results for a series of measurements of candidate competitiveness and voter participation. While I find significant results for the first outcome, there only small effects and no statistically significant results for the impact of electoral design on voter participation in municipal elections in Brazil.
+
+The rest of the paper is divided as follows. After briefly reviewing electoral rules in Brazil, I then cover the research design, explaining the core models, the data and measurements used. The next section covers the results for each of the outcome variables followed by a brief discussion of results. The paper concludes with considerations on next steps and policy implications.
+
+## Electoral Rules in Brazil
+
+In Brazil, general elections for city officials occur every four years, when both the executive and legislative seats placed on the ballot. They are alternated with state and federal elections, that also occur every four years. There are also suplementary elections for local office -- sometimes held alongside the intervening state and federal election -- if the incumbent is removed from office within the first two years of his or her mandate.
+
+Brazil is a multiparty presidential system. According to electoral rules, candidates for executive seats in both federal and state elections need to get 50% +1 votes to win office in the first round of elections. If no one crosses this threshold, there are runoff elections between the two highest placed candidates. In the case of municipal elections, cities with more than 200 thousand registered voters follow the same electoral system. Yet those with less than 200 thousand do not have runoffs, but rather declare the person with the most votes the winner. This rule was created in the 1985 Federal Constitution and has been explored in previous scholarship, mostly to understand impact on fiscal expenditure and educational policy. Similar rules are observed in places like Italy and have also been explored in similar designs.
+
+It is important to note that although voting is mandatory in Brazil and all citizens over 18 years of age need to be registered to vote in order to register for other documents -- including their work permits --, a registered voter can nonetheless not show up to the polls on election day. If she is in another town, the person can justify this vote in any polling station in a simple procedure on the actual day of the election or submit proof she was out of town to her own precinct in the 30 days after the elections. Any registered voter can justify his or her vote up to three times in a row before their registration is cancelled. If she is not travelling and decides not to vote, the person can also later pay a small fine for not voting. Being in good standing with the electoral justice is also required for things like emitting high school and tertiary education diplomas and signing up for work permits.
+
+While, at first glance, analyzing turnover in a country where voting is mandatory may seem odd, the possibility of justifying votes means there is indeed absenteeism in elections. The actual turnout responds to incentives like the easiness of transferring your registration to vote when one moves town and the possibility of travelling. Since there are many informal workers in Brazil, many of the obstacles for emitting official documents are not actually a hindrance for this part of the population, that is also frequently part of migration waves from the poorer northeast and rural parts of the country into the big urban centers of the southeast. 
+
+Additionally, elections occur on Sundays in October, normally in the beggining and the end of the month. While this is less common for the first round, the second round may fall near a national holiday on November 2nd and incumbents, for example, may decide to give civil servants an additional day off if the holiday falls on a Tuesday or a Thursday, effectively creating an even longer weekend and enhancing incentives for travelling.
+
+Even when a person shows up at the polling station, there are still a couple of things to consider in terms of voter participation. Since voting is mandatory in the country, everyone has the possibility of voting null and voting white. The null vote is not counted as a valid vote. The white vote is counted as a valid vote and goes to the front runner in a race. Additionally, you may vote not on a specific person, but on a party that is represented in any one of the coalitions backing candidates in the election. Then, finally, there are the nominal votes -- those cast directly for a specific candidate.
+
+There have been growing campaigns to cast null votes in the country -- including some based on false information that an election can be called off if more than 50% of votes are null, which is not true. The movement in favor of voting null has gained momentum as corruption scandals and other political malfeasance have fed a growing aversion to established politicians among the population. While one may argue that casting a null vote is a political act, and it does have a direct consequence in elections by lowering the amount of valid votes necessary for a candidate to win, understanding the amount of valid votes is also important to gauge effective political participation. Thus it is a more nuanced approach to turnout.
+
+Finally, the decision to cast a non-nominal vote - either a white vote or a vote for a party in the coalition - is also an important signal to the candidates in elections. Since campaigning is mostly personalistic in the country, the decision to not give a vote directly to a candidate may be read as a sign of his lack of competitiveness. This is particularly true for white votes. This is a less pronounced form of non-participation.
 
 ## Research Design
 
+In this research, I explore this change in rules for municipal elections at the 200,000 cutoff to run a regression discontinuity model and analyze the impact of the runoff system on  measures of political competitiveness and voter participation. In this manner, we will empirically test one of the main tenets of electoral theory.
 
+The specific intuition at work behind the mechanism is straightforward: the 50% + 1 threshold changes the incentives for a theoretically third placed candidate to enter the race. Different from a more direct design, in a runoff model a candidate does not need to be competitive enough to think he can place first in the first round, but can be tempted to run even if he is expected to place second in the first round, with hopes of gaining some votes from other candidates when he faces the first placed candidate in the runoff. This would increase competition. 
 
-#### About RDD
-The main idea behind this research design (Angrist & Lavy, 1999; Black,1999;Van DerKlaauw,2002)is thatmunicipalities justbelow the cutoff size (with a single ballot) make good comparisons with those just above the cutoff (where the dual ballot applies). This strategy is deemed preferable to other non-experimental methods because if the units of the analysis (in our case the Italian municipalities) are unable to manipulate precisely the forcing variable (their size), the variation in treatment (changes in local electoral rules) around the threshold is randomized as if the municipalities had been randomly drawn just below or just above the threshold (see Lee, 2008).
+Our main question is: 
 
-(Page 27). Barone & De Blasio, 2013
+**Do runoff elections produce more competitive races and increase participation?**
 
-#### Baseline covariates
-
-Need to report there are no jumps in other policies that could be influencing the outcome
-
-- Income per capita
-- Public expenditure per capita
+My hypothesis is that there will be a positive jump at the point of discontinuity when evaluate the impact of electorate size and these two variables. In these designs, we are less worried about the actual shape of the line formed before and after the cut-off. My dependent variables are competitiveness of electoral races and voter turnout.
 
 #### Model
 
+I work with two models, using a regression discontinuity design, as explored below. In my first model, I explore voter participation, where:
 
-$$ VoterParticipation_m = \beta T_m + g(Z_m) + \sum_{t=starting year}^{end year} \lambda_{t} D_t + \epsilon_m $$
+$$ VoterParticiation_m = \beta_1 T_m + g(Z_m) + D_t + \epsilon_m $$
 
+- $T_m$ is the dummy treatment variable that takes the value of 1 when $Z_m \geq 0$ and 0 otherwise for each city $m$;
+- $Z_m$ is the forcing variable and is equal to $Electorate_m - 200000.00$ for each city $m$.
 
+In this model, $\beta_1$ is our parameter of interest. I will explore both models in this simple form and also with year fixed effects and state fixed effects. I used a polynomial specification in order to better capture the variation and better represent the discontinuity at the cut-off, by letting function format of the line before and after it better capture any existing relationship between the size of the electorate and our dependendt variable. 
 
-$T_m$ is the dummy treatment variable that takes the value of 1 when $Z_m \geq 0$ and 0 otherwise.
-$Z_m$ is the forcing variable and is equal to $POP_m - 200000.00$
+Since we are not worried about the functional form of that line but rather the size and direction of the effect at the cutoff, this allows us to better capture the impact of that change -- considering we agree with the assumption that cities just below and just above the cutoff are not practically the same in all other aspects and that the inability of incumbents and challengers to change the size of the electorate makes this assignment as good as random. This allows us to identify causality in the model: it is the change in the electoral design that is causing this "jump" in the outcome of interest.
 
+On this latter point, the possibility of incumbents rallying up residents to register to vote, for example, could be reason for concern. But campaings for youth to register to vote -- voting is optional for 16 and 17 year olds -- are normally run by the state-level electoral justice body, not by candidates themselves. Only recently have social movements sprung up to campaign for youth to register to vote. 
 
-$$ ElectoralCompetition_m =  $$
+The second model is really similar to the first model, yet instead of turnout, I explore the number of candidates in each elections.
 
-$$ PolicyOutput_m =  $$
+$$ Candidates_m = \beta_1 T_m + g(Z_m) + D_t + \epsilon_m $$
 
-$$ PolicyOutcome_m =  $$
+- $T_m$ is the dummy treatment variable that takes the value of 1 when $Z_m \geq 0$ and 0 otherwise for each city $m$;
+- $Z_m$ is the forcing variable and is equal to $Electorate_m - 200000.00$ for each city $m$.
+
+Likewise, $\beta_1$ is our variable of interest and I will explore a series of specifications.
+
+In further iterations of this paper, I will add an evaluation of policy outputs, to test whether the increase in competitiveness generates more activity on the part of the administration. Finally, evaluating measures of policy outcomes would be the final step in understanding the impact of electoral rules on determining the path of cities as growth machines or either shrinking cities.
+
+### Data
+```{r, include=FALSE}
+vote_turnout_candidates %>% summary()
+# total 1080 observations
+
+sum(vote_turnout_candidates$D)
+# 475 with more than 200.000 registered voters
+
+cities_size <- vote_turnout_candidates %>% 
+  group_by(ANO_ELEICAO, D) %>% 
+  count()
+
+cities_size <- cities_size %>% rename("Election Year" = ANO_ELEICAO, "Have Runoff Elections" = D, "Number of Cities" = n)
+```
+
+In order to explore our data, I am using Brazil's Superior Electoral Court's (TSE, in Portuguese) collection of electoral outcomes. I am using information on the different variables from 2000 to 2016. In order to better characterize the discontinuity at our cutoff point, I am only using observations closer to the 200 thousand registered voters mark, so all cities with less than 100 thousand people registered to vote have been dropped from the sample. In the end, I have a data set with 1080 observations, with 475 above or at the cutoff. The breakdown of the cities in the dataset is reported in Table 1. Cities that have runoff elections are marked as 1 and those that don't are 0.
+
+```{r, results='asis'}
+kable(cities_size, caption="Breakdown of Cities in Dataset")
+```
+
+It is important to note that there are no jumps on the amount of cities before and after the cutoff in the data, indicating that incumbents and challengers indeed cannot manipulate their placement in this cutoff. This is clear in the following histogram:
+
+```{r, results='asis', message = FALSE}
+vote_turnout_candidates %>% 
+  filter(registered_voters>100000, registered_voters<300000) %>% 
+  ggplot(aes(x=registered_voters)) + 
+  geom_histogram() +
+  #facet_wrap(~ANO_ELEICAO) +
+  scale_x_continuous(labels = scales::comma) +
+  labs(title = "Distribution of Cities According to the Amount of Registered Voters", 
+       subtitle = "2000-2016 General Mayor Elections in Brazil",
+       y = "Number of Cities", 
+       x = "Registered Voters")
+```
+
+It is also important to inspect this relationship across time. Again, as can be seen in the chart bellow, there are no jumps at the cutoff, even if the number of cities around the cutoff has certainly increased over time, as the population has grown. Yet this growth was not concentrated decidedly on one side or the other of the cutoff.
+
+```{r, results='asis', fig.height=6, message=FALSE}
+vote_turnout_candidates %>% 
+filter(registered_voters>100000, registered_voters<300000) %>% 
+  ggplot(aes(x=registered_voters)) + 
+  geom_histogram() +
+  facet_wrap(~ANO_ELEICAO, scales = "fixed", ncol = 1)+
+  scale_x_continuous(labels = scales::comma) +
+  labs(title = "Distribution of Cities According to the Amount of Registered Voters", 
+       subtitle = "2000-2016 General Mayor Elections in Brazil",
+       y = "Number of Cities", 
+       x = "Registered Voters")
+
+```
+
+### Measurements
+
+I measure competitiveness of elections by using the number of candidates disputing the first ballot for each year. In order to measure voter turnout, I will use the percent of votes cast -- which is the total amount of people registered to vote minus abstentions. I will also test more nuanced measures of voter participation, in the form of valid votes -- those that were not null -- and of nominal votes -- those that are written out to specific candidates. Since voting is mandatory in Brazil, these alternate measures are good ways to capture people who went to the ballot but whose vote did not directly contribute to the election, in the form of unvalid or null votes. 
+
+Another particularity of the Brazilian system is that you are allowed to vote for a party but not for a specific candidate or vote white and have that counts towards who eventually becomes the front runner. This is captured by the non-nominal vote. The measures of voter participation were calculated at the city level. While precinct level data was available, this level of analysis was more coherent with the overall design, avoiding having to worry about clustering standard errors at the city level or running additional fixed effects.
+
+The amount of registered voters in our cities of interest had a mean that grew from 341,450 in 2000 to 386.710 in 2016 and medians that went from 172.293 to 176758 over the same time period - peaking at 187.750 in 2008. This difference is due to the bigger cities, like Rio de Janeiro and São Paulo, that have millions of registered voters. The cities above the cutoff went from 42% of our sample size in 2000 to 47% in 2008, dropping to 43% in 2016. The median number of candidates in the cities was 5 throughout the whole period, with a minimum of 2 and a maximum of 17 candidates.
+
+The percentage of votes cast fell from a mean of 86 to 83 over the time period while valid votes decreased from 81 to 74 percent and nominal votes from 78 to 70 percent. The smallest percent of votes cast in a city was 72% in 2017, while the minimum valid votes were 21% and of nominal votes was 19%. The maximum percentage of votes cast, valid votes and nominal votes were 95 91 and 90 percent, respectively.
+
+```{r, include=FALSE}
+summary_cities <- vote_turnout_candidates %>% 
+  group_by(ANO_ELEICAO) %>% 
+  summarise_at(vars(n, D, registered_voters, 
+                    votes_cast_pct, valid_votes_pct,
+                    votes_nominal_pct), 
+               funs(sum, mean, median, min, max, sd))
+```
 
 ## Results
 
+As we can see in the following charts, there is an observable discontinuity at the cutoff for almost all of our measures of in every election since 2000 to 2016 when we evaluate both electoral competitiveness and voter participation. It is important to analyze this relationship on a yearly basis, as is plotted in the following images. In our statistical analysis we will also evaluate models that control for state-level effects. Upon visual inspection, most of the measures appear have a discontinuity at the cutoff in most years, but statistical evaluation is important in order to understand their significance. I use the standard metric of $\alpha$ = 0.05 for all models and their specifications. These results are reported in the following tables.
 
+When evaluating our model, D is our variable of interest that measures $\beta$ from the equations above. I is the coefficient on our forcing variable $Z_m$. In each table, for the measurements, the first model reported is a general model with no controls, the second includes year fixed effects for each election year and the third includes state fixed effects. When interpreting coefficients on the elections, the 2000 election is the election of reference. The intuition for these controls is that there may be specificities of each election cycle that is thus "soaked up" by the added variables, allowing the variation in the cutoff to be due just to the change in electoral design.
+
+### Candidates per election
+
+
+
+```{r, results='asis', fig.height=7}
+vote_turnout_candidates %>% 
+  filter(registered_voters<300000) %>% 
+  ggplot(aes(x = registered_voters, y= n, group=D)) + 
+  geom_point() +
+  facet_wrap(~ANO_ELEICAO, ncol=1)+
+  scale_x_continuous(labels = scales::comma) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(title = "Impact of Runoff Electoral Design on the Number of Candidates", 
+       subtitle = "2000-2016 General Mayor Elections in Brazil",
+       y = "Number of Candidates", 
+       x = "Registered Voters") +
+  geom_smooth(method = "lm",formula = y ~ x + I(x^2), aes())
+
+```
+
+Regarding the number of candidates per election, as can be seen in Table 2, there is a positive and significant effect of electoral design in all specifications. Elections where third candidates can be expected to be more competitive indeed have more candidates. In general, this design adds a further two candidates to the ticket. When the median amount of voters is 5 per race, this is a significant increase. This confirms our first hypothesis about the impact of electoral design on electoral competitiveness.
+
+This effect decidedly varies from year to year. Specifically, the effect of electoral design on the number of candidates was smaller in 2008 and 2016, when compared to 2000. This indicates the need for further investigation, which is beyond the scope of this current write up.
+
+```{r, include=FALSE}
+stargazer(rdd_candidates_general, rdd_candidates_general, rdd_candidates_states, font.size="small")
+```
+
+\begin{table}[!htbp] \centering 
+  \caption{Impact of Electoral Design on Competitiveness} 
+  \label{} 
+  \tiny
+\begin{tabular}{@{\extracolsep{5pt}}lccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{3}{c}{\textit{Dependent variable: Number of Candidates}} \\ 
+\cline{2-4} 
+\\[-1.8ex] & \multicolumn{3}{c}{n} \\ 
+\\[-1.8ex] & (1) & (2) & (3)\\ 
+\hline \\[-1.8ex] 
+ D & 2.257$^{***}$ & 2.260$^{***}$ & 2.280$^{***}$ \\ 
+  & (0.122) & (0.121) & (0.123) \\ 
+  & & & \\ 
+ I & 0.00000$^{***}$ & 0.00000$^{***}$ & 0.00000$^{***}$ \\ 
+  & (0.00000) & (0.00000) & (0.00000) \\ 
+  & & & \\ 
+ 2004 election &  & 0.120 & 0.120 \\ 
+  &  & (0.223) & (0.222) \\ 
+  & & & \\ 
+ 2008 election &  & $-$0.441$^{**}$ & $-$0.435$^{**}$ \\ 
+  &  & (0.219) & (0.218) \\ 
+  & & & \\ 
+ 2012 election &  & 0.112 & 0.121 \\ 
+  &  & (0.213) & (0.212) \\ 
+  & & & \\ 
+ 2016 election &  & $-$0.267 & $-$0.271 \\ 
+  &  & (0.185) & (0.185) \\ 
+  & & & \\ 
+ Constant & 4.306$^{***}$ & 4.445$^{***}$ & 3.294$^{***}$ \\ 
+  & (0.077) & (0.169) & (0.782) \\ 
+  & & & \\ 
+\hline \\[-1.8ex] 
+Observations & 1,080 & 1,080 & 1,080 \\ 
+R$^{2}$ & 0.397 & 0.404 & 0.427 \\ 
+Adjusted R$^{2}$ & 0.395 & 0.401 & 0.410 \\ 
+Residual Std. Error & 1.900 (df = 1077) & 1.892 (df = 1073) & 1.877 (df = 1048) \\ 
+F Statistic & 353.946$^{***}$ (df = 2; 1077) & 121.139$^{***}$ (df = 6; 1073) & 25.160$^{***}$ (df = 31; 1048) \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
+\end{table} 
+
+### Votes Cast
+
+```{r, results='asis', fig.height=7}
+vote_turnout_candidates %>% 
+  filter(registered_voters<300000) %>% 
+  ggplot(aes(x = registered_voters, y= votes_cast_pct, group=D)) + 
+  geom_point() +
+  facet_wrap(~ANO_ELEICAO, ncol=1)+
+  scale_x_continuous(labels = scales::comma) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(title = "Impact of Runoff Electoral Design on the Number of Votes Cast", 
+       subtitle = "2000-2016 General Mayor Elections in Brazil",
+       y = "Percent of Votes Cast", 
+       x = "Registered Voters") +
+  geom_smooth(method = "lm",formula = y ~ x + I(x^2), aes())
+```
+
+The following image and Table 3 explore the impact of runoff election design on our first measure of voter participation, the percent of votes cast vis à vis the amount of registered voters. Here the size of the effect of electoral design is very small: the adoption of runoffs leads to a 0.2 increase in the percentage of voters who actually vote yet this result is not statistically significant in any of our specifications.
+
+Thus we reject our hypothesis that electoral design is relevant to voter participation, at least regarding the percent of votes cast.
+
+```{r, include=FALSE}
+stargazer(rdd_votescast_general, rdd_votescast, rdd_votescast_states)
+```
+
+\begin{table}[!htbp] \centering 
+  \caption{Impact of Electoral Design on Voter Participation as Votes Cast} 
+  \label{} 
+  \tiny
+\begin{tabular}{@{\extracolsep{5pt}}lccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{3}{c}{\textit{Dependent variable: Percentage of Votes Cast}} \\ 
+\cline{2-4} 
+\\[-1.8ex] & \multicolumn{3}{c}{votes\_cast\_pct} \\ 
+\\[-1.8ex] & (1) & (2) & (3)\\ 
+\hline \\[-1.8ex] 
+ D & 0.003 & 0.002 & 0.002 \\ 
+  & (0.003) & (0.002) & (0.002) \\ 
+  & & & \\ 
+ I & $-$0.000$^{***}$ & $-$0.000$^{***}$ & $-$0.000$^{***}$ \\ 
+  & (0.000) & (0.000) & (0.000) \\ 
+  & & & \\ 
+ 2004 Election &  & 0.003 & 0.002 \\ 
+  &  & (0.004) & (0.004) \\ 
+  & & & \\ 
+ 2008 Election &  & $-$0.004 & $-$0.004 \\ 
+  &  & (0.004) & (0.004) \\ 
+  & & & \\ 
+ 2012 Election &  & $-$0.020$^{***}$ & $-$0.020$^{***}$ \\ 
+  &  & (0.004) & (0.004) \\ 
+  & & & \\ 
+ 2016 Election &  & $-$0.033$^{***}$ & $-$0.034$^{***}$ \\ 
+  &  & (0.004) & (0.003) \\ 
+  & & & \\ 
+ Constant & 0.840$^{***}$ & 0.858$^{***}$ & 0.833$^{***}$ \\ 
+  & (0.002) & (0.003) & (0.014) \\ 
+  & & & \\ 
+\hline \\[-1.8ex] 
+Observations & 1,080 & 1,080 & 1,080 \\ 
+R$^{2}$ & 0.008 & 0.150 & 0.298 \\ 
+Adjusted R$^{2}$ & 0.006 & 0.145 & 0.277 \\ 
+Residual Std. Error & 0.040 (df = 1077) & 0.037 (df = 1073) & 0.034 (df = 1048) \\ 
+F Statistic & 4.474$^{**}$ (df = 2; 1077) & 31.466$^{***}$ (df = 6; 1073) & 14.318$^{***}$ (df = 31; 1048) \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
+\end{table} 
+
+
+### Valid Votes
+
+```{r, include=FALSE}
+stargazer(rdd_validvotes_general, rdd_validvotes, rdd_validvotes_states)
+```
+
+```{r, results='asis', fig.height=7}
+vote_turnout_candidates %>% 
+  filter(registered_voters<300000) %>% 
+  ggplot(aes(x = registered_voters, y= valid_votes_pct, group=D)) + 
+  geom_point() +
+  facet_wrap(~ANO_ELEICAO, ncol=1)+
+  scale_x_continuous(labels = scales::comma) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(title = "Impact of Runoff Electoral Design on the Number of Valid Votes", 
+       subtitle = "2000-2016 General Mayor Elections in Brazil",
+       y = "Percent of Valid Votes", 
+       x = "Registered Voters") +
+  geom_smooth(method = "lm",formula = y ~ x + I(x^2), aes())
+```
+
+Now we will understand if there is an effect in valid votes. As races become more competitive and new candidates enter the mix, we may think that more people will be stimulated to cast a vote that counts. Yet in Table 4, when analyzing the impact of runoffs on the percent of valid vots, we notice that while there is a bigger positive effect when compared to the percent of votes cast, it is still quite small. Indeed, in all specifications this increase is not statistically significant. We are also unable to reject the null hypothesis and cannot affirm that electoral design has an impact on valid votes in Brazilian municipal elections.
+
+\begin{table}[!htbp] \centering 
+  \caption{Impact of Electoral Design on Voter Participation as Valid Votes} 
+  \label{} 
+  \tiny 
+\begin{tabular}{@{\extracolsep{5pt}}lccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{3}{c}{\textit{Dependent variable: Percentage of Valid Votes}} \\ 
+\cline{2-4} 
+\\[-1.8ex] & \multicolumn{3}{c}{valid\_votes\_pct} \\ 
+\\[-1.8ex] & (1) & (2) & (3)\\ 
+\hline \\[-1.8ex] 
+ D & 0.007 & 0.006 & 0.006 \\ 
+  & (0.005) & (0.004) & (0.004) \\ 
+  & & & \\ 
+ I & $-$0.000$^{*}$ & $-$0.000$^{*}$ & $-$0.000 \\ 
+  & (0.000) & (0.000) & (0.000) \\ 
+  & & & \\ 
+ 2004 Election &  & 0.004 & 0.003 \\ 
+  &  & (0.008) & (0.008) \\ 
+  & & & \\ 
+ 2008 Election &  & $-$0.007 & $-$0.006 \\ 
+  &  & (0.008) & (0.008) \\ 
+  & & & \\ 
+ 2012 Election &  & $-$0.045$^{***}$ & $-$0.045$^{***}$ \\ 
+  &  & (0.008) & (0.008) \\ 
+  & & & \\ 
+ 2016 Election &  & $-$0.069$^{***}$ & $-$0.070$^{***}$ \\ 
+  &  & (0.007) & (0.007) \\ 
+  & & & \\ 
+ Constant & 0.771$^{***}$ & 0.807$^{***}$ & 0.807$^{***}$ \\ 
+  & (0.003) & (0.006) & (0.028) \\ 
+  & & & \\ 
+\hline \\[-1.8ex] 
+Observations & 1,080 & 1,080 & 1,080 \\ 
+R$^{2}$ & 0.004 & 0.172 & 0.245 \\ 
+Adjusted R$^{2}$ & 0.002 & 0.167 & 0.223 \\ 
+Residual Std. Error & 0.076 (df = 1077) & 0.069 (df = 1073) & 0.067 (df = 1048) \\ 
+F Statistic & 2.228 (df = 2; 1077) & 37.052$^{***}$ (df = 6; 1073) & 10.994$^{***}$ (df = 31; 1048) \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
+\end{table} 
+
+
+### Nominal Votes
+
+```{r, results='asis', fig.height=7}
+vote_turnout_candidates %>% 
+  filter(registered_voters<300000) %>% 
+  ggplot(aes(x = registered_voters, y= votes_nominal_pct, group=D)) + 
+  geom_point() +
+  facet_wrap(~ANO_ELEICAO, ncol=1)+
+  scale_x_continuous(labels = scales::comma) +
+  scale_y_continuous(labels = scales::comma) +
+  labs(title = "Impact of Runoff Electoral Design on the Number of Nominal Votes", 
+       subtitle = "2000-2016 General Mayor Elections in Brazil",
+       y = "Percent of Nominal Votes", 
+       x = "Registered Voters") +
+  geom_smooth(method = "lm",formula = y ~ x + I(x^2), aes())
+```
+
+```{r, include=FALSE}
+stargazer(rdd_nominalvotes_general, rdd_nominalvotes, rdd_nominalvotes_states)
+```
+
+Finally, we analyze the impact of electoral design on voter participation as measured by nominal votes. The intuition here The results are summarized in Table 5, where once again we find really small positive effects on D, which are in the general direction we were expecting, yet none of them are statistically significant. Therefore we cannot affirm that there is an impact of electoral design on this measure of voter participation.
+
+\begin{table}[!htbp] \centering 
+  \caption{Impact of Electoral Design on Voter Participation as Nominal Votes} 
+  \label{} 
+  \tiny
+\begin{tabular}{@{\extracolsep{5pt}}lccc} 
+\\[-1.8ex]\hline 
+\hline \\[-1.8ex] 
+ & \multicolumn{3}{c}{\textit{Dependent variable: Percentage of Nominal Votes}} \\ 
+\cline{2-4} 
+\\[-1.8ex] & \multicolumn{3}{c}{votes\_nominal\_pct} \\ 
+\\[-1.8ex] & (1) & (2) & (3)\\ 
+\hline \\[-1.8ex] 
+ D & 0.003 & 0.002 & 0.002 \\ 
+  & (0.005) & (0.005) & (0.005) \\ 
+  & & & \\ 
+ I & $-$0.000$^{*}$ & $-$0.000 & $-$0.000 \\ 
+  & (0.000) & (0.000) & (0.000) \\ 
+  & & & \\ 
+ 2004 Election &  & 0.011 & 0.010 \\ 
+  &  & (0.009) & (0.009) \\ 
+  & & & \\ 
+ 2008 Election &  & $-$0.010 & $-$0.010 \\ 
+  &  & (0.009) & (0.008) \\ 
+  & & & \\ 
+ 2012 Election &  & $-$0.053$^{***}$ & $-$0.054$^{***}$ \\ 
+  &  & (0.009) & (0.008) \\ 
+  & & & \\ 
+ 2016 Election &  & $-$0.080$^{***}$ & $-$0.082$^{***}$ \\ 
+  &  & (0.008) & (0.007) \\ 
+  & & & \\ 
+ Constant & 0.741$^{***}$ & 0.783$^{***}$ & 0.803$^{***}$ \\ 
+  & (0.003) & (0.007) & (0.030) \\ 
+  & & & \\ 
+\hline \\[-1.8ex] 
+Observations & 1,080 & 1,080 & 1,080 \\ 
+R$^{2}$ & 0.003 & 0.190 & 0.290 \\ 
+Adjusted R$^{2}$ & 0.001 & 0.185 & 0.269 \\ 
+Residual Std. Error & 0.086 (df = 1077) & 0.077 (df = 1073) & 0.073 (df = 1048) \\ 
+F Statistic & 1.494 (df = 2; 1077) & 41.836$^{***}$ (df = 6; 1073) & 13.841$^{***}$ (df = 31; 1048) \\ 
+\hline 
+\hline \\[-1.8ex] 
+\textit{Note:}  & \multicolumn{3}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
+\end{tabular} 
+\end{table} 
 
 ## Discussion
 
+These results are preliminary and merit further investigation. We have confirmed our first hypothesis and were unable to reject the null in the three measurements of voter participation in for our second hypothesis. This is surprising, since the increase in competition could be seen as an incentive for candidates to make sure more voters participate. The difference in years for most effects was surprising and needs closer inspection.
+
+In the same vein, it might be worth investigating if there are other issues at play with the impact of electoral rules. These could include isses such as the budget for campaigning, the political viability of the candidacy under a certain set number of party systems, etc.
 
 ## Conclusion
 
-- Implications
+In terms of next steps of the project, there are a series of ways forward. I will start by exploring the possible avenues to increment the content. There, I want to integrate analysis of both policy output in key salient policy areas, like the number of Intensive Care Unit beds,for example; and policy outcomes, such as indicators of maternal health.
+
+There are a series of statistical improvements that I intend to develop as well. The most important of them at the moment is to evaluate power of the sample size and run a couple of tests on the robustness of the standard errors being reported. Another possibility is running regressions on separate datasets for each year, in order to underscore if Brazilians -- both candidates and voters -- became more sensitive to electoral design and its consequences over time. Due to the young nature of our democracy, this would not be a surprise.
+
+Finally, it is worth noting the political relevance of this exploration. The fact that voting is mandatory in Brazil makes resort to these tactics -- not voting, using the null vote, etc -- even more sophisticated. Yet as many countries question their electoral rules, these results indicate important expected outcomes in adopting this specific design in multiparty systems.
+
+## References
+
+Barone, Guglielmo, and Guido de Blasio. 2013. “Electoral Rules and Voter Turnout.” International Review of Law and Economics 36 (October): 25–35. https://doi.org/10.1016/j.irle.2013.04.001.
+
+Hlavac, Marek 2018. stargazer: Well-Formatted Regression and Summary Statistics Tables.
+ R package version 5.2.2. https://CRAN.R-project.org/package=stargazer 
+
+Molotch, Harvey. 1976. “The City as a Growth Machine: Toward a Political Economy of Place.” American Journal of Sociology 82 (2): 309–32.
+
+Meireles, Fernando; Silva, Denisson; Costa, Beatriz. 2016. electionsBR: R functions to download and clean
+  Brazilian electoral data. URL: http://electionsbr.com/

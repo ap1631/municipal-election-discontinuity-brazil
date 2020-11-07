@@ -1,0 +1,221 @@
+CNES - Recursos Físicos - Hospitalar - Leitos Complementares - Brasil
+Quantidade existenteQuantidade SUSQuantidade Não SUS por Município
+Leitos complementares: UTI adulto II COVID-19, UTI pediátrica II COVID-19
+Período:Mar/2020
+"Município";"Quantidade_existente";"Quantidade_SUS";"Quantidade_Não_SUS"
+"110020 Porto Velho";10;-;10
+"120040 Rio Branco";10;-;10
+"130240 Lábrea";4;-;4
+"150293 Dom Eliseu";2;-;2
+"150360 Itaituba";10;-;10
+"160030 Macapá";13;-;13
+"210160 Barra do Corda";9;-;9
+"210547 Jenipapo dos Vieiras";2;-;2
+"211130 São Luís";50;-;50
+"220390 Floriano";10;-;10
+"220700 Oeiras";16;-;16
+"220770 Parnaíba";25;-;25
+"220800 Picos";10;-;10
+"220840 Piripiri";9;-;9
+"221060 São Raimundo Nonato";5;-;5
+"221100 Teresina";148;-;148
+"230440 Fortaleza";292;-;292
+"230540 Icó";10;-;10
+"230550 Iguatu";29;-;29
+"230640 Itapipoca";10;-;10
+"231290 Sobral";11;-;11
+"231330 Tauá";1;-;1
+"240200 Caicó";15;-;15
+"240310 Currais Novos";10;-;10
+"240710 Macaíba";10;-;10
+"240800 Mossoró";20;-;20
+"240810 Natal";64;-;64
+"240325 Parnamirim";7;-;7
+"240940 Pau dos Ferros";4;-;4
+"241200 São Gonçalo do Amarante";30;-;30
+"251370 Santa Rita";4;-;4
+"260290 Cabo de Santo Agostinho";30;-;30
+"260600 Garanhuns";20;-;20
+"261000 Palmares";5;-;5
+"261160 Recife";516;-;516
+"261247 Santa Cruz da Baixa Verde";6;-;6
+"261390 Serra Talhada";5;-;5
+"270030 Arapiraca";9;-;9
+"270230 Coruripe";15;-;15
+"270430 Maceió";98;-;98
+"280030 Aracaju";14;-;14
+"280350 Lagarto";10;-;10
+"290070 Alagoinhas";12;-;12
+"290320 Barreiras";6;-;6
+"291080 Feira de Santana";10;-;10
+"291170 Guanambi";4;-;4
+"291360 Ilhéus";14;-;14
+"291460 Irecê";5;-;5
+"291800 Jequié";2;-;2
+"291840 Juazeiro";10;-;10
+"292530 Porto Seguro";6;-;6
+"292660 Ribeira do Pombal";10;-;10
+"292740 Salvador";569;-;569
+"292990 Seabra";5;-;5
+"293050 Serrinha";10;-;10
+"293135 Teixeira de Freitas";10;-;10
+"293330 Vitória da Conquista";10;-;10
+"310400 Araxá";52;-;52
+"310560 Barbacena";20;-;20
+"310670 Betim";64;-;64
+"310900 Brumadinho";8;-;8
+"311860 Contagem";17;-;17
+"313130 Ipatinga";17;-;17
+"313940 Manhuaçu";10;-;10
+"317020 Uberlândia";2;-;2
+"320120 Cachoeiro de Itapemirim";10;-;10
+"320490 São Mateus";8;-;8
+"320500 Serra";39;-;39
+"330170 Duque de Caxias";128;-;128
+"330190 Itaboraí";8;-;8
+"330250 Magé";20;-;20
+"330330 Niterói";15;-;15
+"330370 Paraíba do Sul";3;-;3
+"330390 Petrópolis";110;-;110
+"330455 Rio de Janeiro";401;-;401
+"330490 São Gonçalo";41;-;41
+"330580 Teresópolis";30;-;30
+"330630 Volta Redonda";209;-;209
+"350320 Araraquara";20;-;20
+"350590 Batatais";1;-;1
+"350635 Bertioga";10;-;10
+"350760 Bragança Paulista";10;-;10
+"350950 Campinas";50;-;50
+"351050 Caraguatatuba";47;-;47
+"351110 Catanduva";20;-;20
+"351350 Cubatão";10;-;10
+"351518 Espírito Santo do Pinhal";10;-;10
+"351550 Fernandópolis";4;-;4
+"351880 Guarulhos";15;-;15
+"352040 Ilhabela";6;-;6
+"352210 Itanhaém";10;-;10
+"352430 Jaboticabal";2;-;2
+"352480 Jales";6;-;6
+"352690 Limeira";15;-;15
+"353130 Monte Alto";5;-;5
+"353440 Osasco";30;-;30
+"353800 Pindamonhangaba";10;-;10
+"353870 Piracicaba";39;-;39
+"354100 Praia Grande";34;-;34
+"354340 Ribeirão Preto";16;-;16
+"354390 Rio Claro";10;-;10
+"354680 Santa Isabel";1;-;1
+"354850 Santos";132;-;132
+"354880 São Caetano do Sul";34;-;34
+"354890 São Carlos";16;-;16
+"354980 São José do Rio Preto";78;-;78
+"354990 São José dos Campos";20;-;20
+"355010 São Manuel";3;-;3
+"355030 São Paulo";957;-;957
+"355040 São Pedro";5;-;5
+"355100 São Vicente";37;-;37
+"355170 Sertãozinho";4;-;4
+"355220 Sorocaba";20;-;20
+"355280 Taboão da Serra";10;-;10
+"355400 Tatuí";5;-;5
+"355410 Taubaté";14;-;14
+"355710 Votuporanga";10;-;10
+"410140 Apucarana";14;-;14
+"410150 Arapongas";20;-;20
+"410200 Assis Chateaubriand";10;-;10
+"410240 Bandeirantes";8;-;8
+"410400 Campina Grande do Sul";20;-;20
+"410420 Campo Largo";30;-;30
+"410430 Campo Mourão";14;-;14
+"410480 Cascavel";29;-;29
+"410540 Chopinzinho";10;-;10
+"410550 Cianorte";6;-;6
+"410590 Colorado";10;-;10
+"410640 Cornélio Procópio";10;-;10
+"410690 Curitiba";215;-;215
+"410830 Foz do Iguaçu";17;-;17
+"410840 Francisco Beltrão";12;-;12
+"410860 Goioerê";10;-;10
+"410940 Guarapuava";40;-;40
+"411070 Irati";8;-;8
+"411320 Lapa";3;-;3
+"411330 Laranjeiras do Sul";10;-;10
+"411350 Loanda";4;-;4
+"411370 Londrina";46;-;46
+"411520 Maringá";84;-;84
+"411560 Matelândia";10;-;10
+"411760 Palmas";10;-;10
+"411790 Palotina";10;-;10
+"411820 Paranaguá";10;-;10
+"411840 Paranavaí";10;-;10
+"411850 Pato Branco";20;-;20
+"411990 Ponta Grossa";10;-;10
+"412035 Pranchita";3;-;3
+"412410 Santo Antônio da Platina";10;-;10
+"412550 São José dos Pinhais";20;-;20
+"412625 Sarandi";12;-;12
+"412710 Telêmaco Borba";4;-;4
+"412770 Toledo";16;-;16
+"412810 Umuarama";39;-;39
+"412820 União da Vitória";6;-;6
+"420240 Blumenau";31;-;31
+"420420 Chapecó";11;-;11
+"420460 Criciúma";15;-;15
+"420540 Florianópolis";2;-;2
+"420820 Itajaí";10;-;10
+"420900 Joaçaba";6;-;6
+"420910 Joinville";60;-;60
+"420930 Lages";17;-;17
+"421010 Mafra";20;-;20
+"421550 Santa Cecília";8;-;8
+"421720 São Miguel do Oeste";2;-;2
+"421950 Xanxerê";10;-;10
+"430040 Alegrete";10;-;10
+"430160 Bagé";14;-;14
+"430460 Canoas";31;-;31
+"430510 Caxias do Sul";49;-;49
+"430610 Cruz Alta";10;-;10
+"430660 Dom Pedrito";10;-;10
+"430700 Erechim";5;-;5
+"430780 Estrela";10;-;10
+"430800 Faxinal do Soturno";10;-;10
+"431020 Ijuí";10;-;10
+"431140 Lajeado";14;-;14
+"431340 Novo Hamburgo";11;-;11
+"431410 Passo Fundo";23;-;23
+"431440 Pelotas";5;-;5
+"431490 Porto Alegre";108;-;108
+"431560 Rio Grande";10;-;10
+"431640 Rosário do Sul";5;-;5
+"431710 Sant'Ana do Livramento";10;-;10
+"431690 Santa Maria";20;-;20
+"431720 Santa Rosa";14;-;14
+"431750 Santo Ângelo";9;-;9
+"431800 São Borja";4;-;4
+"431830 São Gabriel";2;-;2
+"431890 São Luiz Gonzaga";7;-;7
+"432240 Uruguaiana";10;-;10
+"500295 Chapadão do Sul";4;-;4
+"500325 Costa Rica";5;-;5
+"500370 Dourados";5;-;5
+"510025 Alta Floresta";10;-;10
+"510340 Cuiabá";156;-;156
+"510515 Juína";6;-;6
+"510525 Lucas do Rio Verde";8;-;8
+"510760 Rondonópolis";20;-;20
+"510790 Sinop";20;-;20
+"510792 Sorriso";6;-;6
+"510795 Tangará da Serra";13;-;13
+"510840 Várzea Grande";30;-;30
+"520510 Catalão";12;-;12
+"520870 Goiânia";70;-;70
+"521800 Porangatu";24;-;24
+"Total";7011;-;7011
+ Fonte: Ministério da Saúde - Cadastro Nacional dos Estabelecimentos de Saúde do Brasil - CNES
+ Nota:
+ A partir do processamento de junho de 2012, houve mudança na classificação da natureza e esfera dos estabelecimentos. Com isso, temos que:
+ 
+ Até maio de 2012 estas informações estão disponíveis como "Natureza" e "Esfera Administrativa".
+ De junho de 2012 a outubro de 2015, estão disponíveis tanto como "Natureza" e "Esfera Administrativa", como "Natureza Jurídica" e "Esfera Jurídica".
+ A partir de novembro de 2015, estão disponíveis como "Natureza Jurídica" e "Esfera Jurídica".
+ 

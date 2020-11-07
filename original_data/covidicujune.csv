@@ -1,0 +1,580 @@
+CNES - Recursos Físicos - Hospitalar - Leitos Complementares - Brasil
+Quantidade existenteQuantidade SUSQuantidade Não SUS por Município
+Leitos complementares: UTI adulto II COVID-19, UTI pediátrica II COVID-19
+Período:Jun/2020
+"Município";"Quantidade_existente";"Quantidade_SUS";"Quantidade_Não_SUS"
+"110002 Ariquemes";18;6;12
+"110004 Cacoal";16;16;-
+"110011 Jaru";5;5;-
+"110015 Ouro Preto do Oeste";7;-;7
+"110020 Porto Velho";103;44;59
+"110030 Vilhena";10;10;-
+"120010 Brasiléia";14;-;14
+"120020 Cruzeiro do Sul";10;10;-
+"120040 Rio Branco";40;20;20
+"130070 Boca do Acre";6;-;6
+"130080 Borba";12;-;12
+"130230 Jutaí";3;-;3
+"130240 Lábrea";4;-;4
+"130250 Manacapuru";3;-;3
+"130260 Manaus";219;194;25
+"130330 Novo Aripuanã";4;-;4
+"130423 Tonantins";2;-;2
+"140010 Boa Vista";35;15;20
+"150010 Abaetetuba";5;-;5
+"150060 Altamira";10;10;-
+"150080 Ananindeua";36;27;9
+"150130 Barcarena";2;-;2
+"150140 Belém";436;182;254
+"150170 Bragança";30;30;-
+"150180 Breves";24;-;24
+"150220 Capanema";40;10;30
+"150240 Castanhal";6;6;-
+"150270 Conceição do Araguaia";12;-;12
+"150293 Dom Eliseu";2;-;2
+"150360 Itaituba";10;-;10
+"150420 Marabá";50;10;40
+"150553 Parauapebas";11;-;11
+"150680 Santarém";54;34;20
+"150812 Ulianópolis";7;7;-
+"160027 Laranjal do Jari";5;-;5
+"160030 Macapá";37;32;5
+"160060 Santana";1;-;1
+"170210 Araguaína";41;20;21
+"170950 Gurupi";1;-;1
+"172100 Palmas";22;22;-
+"210005 Açailândia";17;10;7
+"210120 Bacabal";6;-;6
+"210160 Barra do Corda";9;9;-
+"210300 Caxias";25;20;5
+"210330 Codó";10;-;10
+"210350 Colinas";4;-;4
+"210360 Coroatá";14;10;4
+"210408 Fernando Falcão";2;-;2
+"210480 Grajaú";10;-;10
+"210530 Imperatriz";49;10;39
+"210547 Jenipapo dos Vieiras";2;-;2
+"210570 Lago da Pedra";5;-;5
+"210660 Matões";5;-;5
+"210720 Nina Rodrigues";1;-;1
+"210820 Pedreiras";5;-;5
+"210845 Peritoró";10;10;-
+"210860 Pinheiro";12;-;12
+"210910 Presidente Dutra";10;10;-
+"210990 Santa Inês";4;-;4
+"211003 Santa Luzia do Paruá";10;-;10
+"211130 São Luís";167;139;28
+"211210 Timbiras";6;-;6
+"211220 Timon";10;10;-
+"220390 Floriano";10;-;10
+"220700 Oeiras";10;10;-
+"220770 Parnaíba";45;21;24
+"220800 Picos";20;20;-
+"220840 Piripiri";10;10;-
+"221060 São Raimundo Nonato";15;15;-
+"221100 Teresina";239;62;177
+"230190 Barbalha";30;-;30
+"230250 Brejo Santo";7;7;-
+"230280 Canindé";10;-;10
+"230370 Caucaia";14;9;5
+"230410 Crateús";10;10;-
+"230420 Crato";15;-;15
+"230428 Eusébio";12;-;12
+"230440 Fortaleza";417;220;197
+"230500 Guaraciaba do Norte";5;-;5
+"230523 Horizonte";6;-;6
+"230540 Icó";10;-;10
+"230550 Iguatu";20;10;10
+"230640 Itapipoca";17;10;7
+"230730 Juazeiro do Norte";64;35;29
+"230760 Limoeiro do Norte";10;-;10
+"230765 Maracanaú";9;5;4
+"230770 Maranguape";10;-;10
+"230960 Pacajus";6;-;6
+"231050 Pedra Branca";8;-;8
+"231140 Quixeramobim";20;20;-
+"231230 São Benedito";1;-;1
+"231240 São Gonçalo do Amarante";8;-;8
+"231290 Sobral";111;36;75
+"231330 Tauá";10;10;-
+"231340 Tianguá";24;10;14
+"240020 Açu";10;-;10
+"240100 Apodi";5;-;5
+"240200 Caicó";30;18;12
+"240310 Currais Novos";5;-;5
+"240450 Guamaré";5;-;5
+"240580 João Câmara";5;-;5
+"240710 Macaíba";10;10;-
+"240720 Macau";10;-;10
+"240800 Mossoró";80;52;28
+"240810 Natal";179;54;125
+"240325 Parnamirim";17;-;17
+"240940 Pau dos Ferros";11;8;3
+"241120 Santa Cruz";22;-;22
+"241150 Santo Antônio";5;-;5
+"241200 São Gonçalo do Amarante";40;-;40
+"250370 Cajazeiras";17;11;6
+"250400 Campina Grande";90;46;44
+"250750 João Pessoa";76;40;36
+"251080 Patos";16;16;-
+"251210 Pombal";5;5;-
+"251370 Santa Rita";52;52;-
+"260040 Água Preta";20;-;20
+"260110 Araripina";10;10;-
+"260120 Arcoverde";8;8;-
+"260140 Barreiros";10;-;10
+"260190 Bezerros";10;-;10
+"260290 Cabo de Santo Agostinho";40;40;-
+"260410 Caruaru";60;40;20
+"260600 Garanhuns";30;15;15
+"260620 Goiana";10;-;10
+"260790 Jaboatão dos Guararapes";20;10;10
+"260890 Limoeiro";10;-;10
+"260940 Moreno";20;20;-
+"260960 Olinda";24;22;2
+"261000 Palmares";30;20;10
+"261070 Paulista";28;18;10
+"261110 Petrolina";25;5;20
+"261160 Recife";862;406;456
+"261220 Salgueiro";5;5;-
+"261360 São José do Egito";4;-;4
+"261390 Serra Talhada";15;15;-
+"261410 Sertânia";18;-;18
+"261640 Vitória de Santo Antão";10;-;10
+"270030 Arapiraca";37;17;20
+"270230 Coruripe";15;15;-
+"270290 Girau do Ponciano";10;-;10
+"270430 Maceió";171;115;56
+"270630 Palmeira dos Índios";6;-;6
+"270670 Penedo";7;-;7
+"270730 Porto Calvo";10;-;10
+"270800 Santana do Ipanema";10;-;10
+"270860 São Miguel dos Campos";10;7;3
+"280030 Aracaju";97;34;63
+"280210 Estância";33;10;23
+"280350 Lagarto";30;10;20
+"290070 Alagoinhas";12;12;-
+"290320 Barreiras";31;5;26
+"290570 Camaçari";36;16;20
+"290750 Catu";10;-;10
+"291080 Feira de Santana";40;10;30
+"291170 Guanambi";11;-;11
+"291360 Ilhéus";53;31;22
+"291460 Irecê";5;5;-
+"291470 Itaberaba";20;-;20
+"291480 Itabuna";23;10;13
+"291750 Jacobina";10;-;10
+"291800 Jequié";10;10;-
+"291840 Juazeiro";10;-;10
+"291955 Luís Eduardo Magalhães";21;-;21
+"292400 Paulo Afonso";4;-;4
+"292530 Porto Seguro";6;6;-
+"292600 Remanso";10;10;-
+"292660 Ribeira do Pombal";3;-;3
+"292740 Salvador";795;354;441
+"292870 Santo Antônio de Jesus";10;5;5
+"292990 Seabra";5;-;5
+"293050 Serrinha";10;-;10
+"293135 Teixeira de Freitas";20;5;15
+"293330 Vitória da Conquista";50;50;-
+"310120 Aiuruoca";5;-;5
+"310160 Alfenas";10;-;10
+"310170 Almenara";10;-;10
+"310340 Araçuaí";6;-;6
+"310350 Araguari";10;-;10
+"310400 Araxá";52;-;52
+"310560 Barbacena";36;31;5
+"310620 Belo Horizonte";453;50;403
+"310670 Betim";85;-;85
+"310740 Bom Despacho";20;-;20
+"310860 Brasília de Minas";10;-;10
+"311120 Campo Belo";10;-;10
+"311330 Carangola";6;6;-
+"311340 Caratinga";55;20;35
+"311530 Cataguases";5;-;5
+"311800 Congonhas";10;-;10
+"311830 Conselheiro Lafaiete";27;-;27
+"311860 Contagem";63;-;63
+"311940 Coronel Fabriciano";20;10;10
+"312090 Curvelo";20;-;20
+"312160 Diamantina";10;-;10
+"312230 Divinópolis";60;10;50
+"312510 Extrema";10;10;-
+"312610 Formiga";12;-;12
+"312770 Governador Valadares";48;18;30
+"312800 Guanhães";10;-;10
+"312980 Ibirité";22;-;22
+"313130 Ipatinga";50;17;33
+"313170 Itabira";10;-;10
+"313240 Itajubá";32;-;32
+"313310 Itanhandu";5;-;5
+"313380 Itaúna";8;-;8
+"313510 Janaúba";5;-;5
+"313620 João Monlevade";15;-;15
+"313670 Juiz de Fora";65;36;29
+"313720 Lagoa da Prata";7;7;-
+"313760 Lagoa Santa";11;-;11
+"313820 Lavras";18;-;18
+"313840 Leopoldina";10;-;10
+"313940 Manhuaçu";20;-;20
+"314310 Monte Carmelo";8;-;8
+"314330 Montes Claros";74;60;14
+"314390 Muriaé";10;5;5
+"314520 Nova Serrana";17;-;17
+"314560 Oliveira";6;-;6
+"314610 Ouro Preto";10;-;10
+"314710 Pará de Minas";20;-;20
+"314790 Passos";29;-;29
+"314800 Patos de Minas";10;10;-
+"314810 Patrocínio";14;14;-
+"315120 Pirapora";5;-;5
+"315180 Poços de Caldas";40;28;12
+"315210 Ponte Nova";16;-;16
+"315220 Porteirinha";5;-;5
+"315250 Pouso Alegre";20;18;2
+"315700 Salinas";5;-;5
+"315780 Santa Luzia";10;-;10
+"315960 Santa Rita do Sapucaí";6;-;6
+"316070 Santos Dumont";10;-;10
+"316250 São João del Rei";36;-;36
+"316370 São Lourenço";12;-;12
+"316470 São Sebastião do Paraíso";10;-;10
+"316720 Sete Lagoas";11;-;11
+"316800 Taiobeiras";8;-;8
+"316860 Teófilo Otoni";17;-;17
+"316930 Três Corações";10;10;-
+"316940 Três Pontas";5;-;5
+"316990 Ubá";12;10;2
+"317010 Uberaba";60;20;40
+"317020 Uberlândia";22;20;2
+"317040 Unaí";10;-;10
+"317070 Varginha";16;8;8
+"317130 Viçosa";17;-;17
+"320060 Aracruz";20;20;-
+"320120 Cachoeiro de Itapemirim";30;10;20
+"320130 Cariacica";9;-;9
+"320150 Colatina";49;39;10
+"320280 Itapemirim";20;-;20
+"320320 Linhares";28;8;20
+"320460 Santa Teresa";10;10;-
+"320480 São José do Calçado";9;-;9
+"320490 São Mateus";40;8;32
+"320500 Serra";267;70;197
+"320520 Vila Velha";95;-;95
+"320530 Vitória";34;-;34
+"330010 Angra dos Reis";40;-;40
+"330020 Araruama";6;6;-
+"330040 Barra Mansa";4;-;4
+"330045 Belford Roxo";25;-;25
+"330060 Bom Jesus do Itabapoana";22;12;10
+"330093 Carapebus";5;5;-
+"330140 Conceição de Macabu";11;-;11
+"330150 Cordeiro";10;-;10
+"330170 Duque de Caxias";218;106;112
+"330190 Itaboraí";43;13;30
+"330210 Itaocara";7;7;-
+"330220 Itaperuna";10;10;-
+"330240 Macaé";22;-;22
+"330250 Magé";15;15;-
+"330270 Maricá";20;10;10
+"330300 Miracema";6;6;-
+"330330 Niterói";38;38;-
+"330340 Nova Friburgo";10;10;-
+"330350 Nova Iguaçu";20;20;-
+"330370 Paraíba do Sul";8;-;8
+"330390 Petrópolis";127;78;49
+"330415 Quissamã";15;5;10
+"330430 Rio Bonito";10;10;-
+"330452 Rio das Ostras";8;-;8
+"330455 Rio de Janeiro";1042;241;801
+"330490 São Gonçalo";220;16;204
+"330500 São João da Barra";10;-;10
+"330510 São João de Meriti";38;38;-
+"330540 Sapucaia";10;-;10
+"330550 Saquarema";6;6;-
+"330555 Seropédica";5;-;5
+"330580 Teresópolis";16;14;2
+"330600 Três Rios";8;8;-
+"330610 Valença";10;10;-
+"330630 Volta Redonda";99;49;50
+"350010 Adamantina";5;-;5
+"350160 Americana";15;10;5
+"350190 Amparo";14;-;14
+"350210 Andradina";5;-;5
+"350280 Araçatuba";22;-;22
+"350320 Araraquara";43;10;33
+"350330 Araras";5;-;5
+"350380 Artur Nogueira";8;-;8
+"350390 Arujá";10;-;10
+"350400 Assis";11;-;11
+"350450 Avaré";10;-;10
+"350550 Barretos";54;36;18
+"350570 Barueri";67;-;67
+"350580 Bastos";5;-;5
+"350590 Batatais";5;-;5
+"350600 Bauru";9;9;-
+"350635 Bertioga";10;10;-
+"350650 Birigui";10;-;10
+"350750 Botucatu";30;30;-
+"350760 Bragança Paulista";20;20;-
+"350850 Caçapava";5;-;5
+"350900 Caieiras";5;-;5
+"350950 Campinas";214;154;60
+"351020 Capão Bonito";5;-;5
+"351040 Capivari";10;-;10
+"351050 Caraguatatuba";47;-;47
+"351060 Carapicuíba";3;-;3
+"351110 Catanduva";20;-;20
+"351280 Cosmópolis";3;-;3
+"351300 Cotia";17;10;7
+"351340 Cruzeiro";10;-;10
+"351350 Cubatão";26;-;26
+"351380 Diadema";20;20;-
+"351500 Embu das Artes";5;5;-
+"351518 Espírito Santo do Pinhal";10;-;10
+"351550 Fernandópolis";6;-;6
+"351570 Ferraz de Vasconcelos";10;-;10
+"351620 Franca";15;-;15
+"351640 Franco da Rocha";39;-;39
+"351830 Guararema";2;-;2
+"351840 Guaratinguetá";18;-;18
+"351870 Guarujá";30;10;20
+"351880 Guarulhos";145;66;79
+"351907 Hortolândia";20;10;10
+"352044 Ilha Solteira";10;-;10
+"352040 Ilhabela";6;-;6
+"352050 Indaiatuba";24;-;24
+"352210 Itanhaém";20;-;20
+"352220 Itapecerica da Serra";17;9;8
+"352230 Itapetininga";6;-;6
+"352250 Itapevi";15;15;-
+"352260 Itapira";20;-;20
+"352270 Itápolis";5;-;5
+"352310 Itaquaquecetuba";22;22;-
+"352430 Jaboticabal";10;-;10
+"352470 Jaguariúna";6;-;6
+"352480 Jales";5;-;5
+"352530 Jaú";10;10;-
+"352590 Jundiaí";46;46;-
+"352620 Juquitiba";2;-;2
+"352670 Leme";5;-;5
+"352690 Limeira";31;-;31
+"352710 Lins";2;-;2
+"352720 Lorena";13;-;13
+"352730 Louveira";4;-;4
+"352900 Marília";59;-;59
+"352930 Matão";5;-;5
+"353010 Mirandópolis";5;-;5
+"353050 Mococa";10;-;10
+"353060 Mogi das Cruzes";56;12;44
+"353070 Mogi Guaçu";20;10;10
+"353080 Mogi Mirim";10;-;10
+"353130 Monte Alto";10;-;10
+"353350 Novo Horizonte";9;-;9
+"353390 Olímpia";10;-;10
+"353440 Osasco";82;60;22
+"353460 Osvaldo Cruz";9;-;9
+"353470 Ourinhos";11;-;11
+"353550 Paraguaçu Paulista";5;-;5
+"353580 Paranapanema";7;-;7
+"353620 Pariquera-Açu";10;-;10
+"353650 Paulínia";10;-;10
+"353670 Pederneiras";8;-;8
+"353710 Pedreira";10;-;10
+"353730 Penápolis";20;-;20
+"353800 Pindamonhangaba";15;-;15
+"353870 Piracicaba";49;31;18
+"354100 Praia Grande";30;20;10
+"354140 Presidente Prudente";20;-;20
+"354160 Promissão";2;-;2
+"354220 Rancharia";5;-;5
+"354260 Registro";15;-;15
+"354340 Ribeirão Preto";85;74;11
+"354390 Rio Claro";18;-;18
+"354400 Rio das Pedras";5;-;5
+"354520 Salto";4;-;4
+"354580 Santa Bárbara d'Oeste";15;-;15
+"354640 Santa Cruz do Rio Pardo";5;-;5
+"354660 Santa Fé do Sul";1;-;1
+"354680 Santa Isabel";10;-;10
+"354730 Santana de Parnaíba";20;-;20
+"354780 Santo André";94;20;74
+"354850 Santos";179;86;93
+"354870 São Bernardo do Campo";119;20;99
+"354880 São Caetano do Sul";44;-;44
+"354890 São Carlos";20;-;20
+"354940 São Joaquim da Barra";5;-;5
+"354980 São José do Rio Preto";109;85;24
+"354990 São José dos Campos";26;6;20
+"355010 São Manuel";5;-;5
+"355030 São Paulo";2267;1041;1226
+"355040 São Pedro";10;-;10
+"355060 São Roque";10;-;10
+"355070 São Sebastião";22;-;22
+"355100 São Vicente";34;21;13
+"355150 Serrana";13;-;13
+"355170 Sertãozinho";11;-;11
+"355210 Socorro";7;-;7
+"355220 Sorocaba";50;10;40
+"355240 Sumaré";24;24;-
+"355250 Suzano";18;-;18
+"355280 Taboão da Serra";10;10;-
+"355400 Tatuí";10;-;10
+"355410 Taubaté";24;14;10
+"355500 Tupã";10;-;10
+"355540 Ubatuba";10;10;-
+"355700 Votorantim";5;-;5
+"355710 Votuporanga";10;-;10
+"410140 Apucarana";12;11;1
+"410150 Arapongas";20;20;-
+"410180 Araucária";13;-;13
+"410200 Assis Chateaubriand";14;10;4
+"410240 Bandeirantes";8;-;8
+"410430 Campo Mourão";15;9;6
+"410480 Cascavel";36;10;26
+"410550 Cianorte";8;6;2
+"410590 Colorado";10;10;-
+"410690 Curitiba";325;227;98
+"410830 Foz do Iguaçu";17;17;-
+"410840 Francisco Beltrão";10;10;-
+"410860 Goioerê";10;-;10
+"410940 Guarapuava";30;10;20
+"411150 Ivaiporã";20;-;20
+"411330 Laranjeiras do Sul";10;-;10
+"411370 Londrina";48;36;12
+"411520 Maringá";59;39;20
+"411820 Paranaguá";10;-;10
+"411840 Paranavaí";10;-;10
+"411850 Pato Branco";7;-;7
+"411990 Ponta Grossa";20;10;10
+"412410 Santo Antônio da Platina";10;-;10
+"412550 São José dos Pinhais";10;10;-
+"412625 Sarandi";12;12;-
+"412710 Telêmaco Borba";10;-;10
+"412770 Toledo";16;16;-
+"412810 Umuarama";42;10;32
+"420140 Araranguá";10;10;-
+"420200 Balneário Camboriú";20;20;-
+"420240 Blumenau";41;31;10
+"420290 Brusque";10;-;10
+"420300 Caçador";10;10;-
+"420380 Canoinhas";5;5;-
+"420420 Chapecó";31;30;1
+"420430 Concórdia";16;16;-
+"420460 Criciúma";29;25;4
+"420480 Curitibanos";6;6;-
+"420540 Florianópolis";99;72;27
+"420590 Gaspar";10;10;-
+"420690 Ibirama";5;-;5
+"420820 Itajaí";56;40;16
+"420890 Jaraguá do Sul";20;20;-
+"420900 Joaçaba";10;10;-
+"420910 Joinville";82;57;25
+"420930 Lages";24;22;2
+"421010 Mafra";14;14;-
+"421050 Maravilha";1;-;1
+"421360 Porto União";2;-;2
+"421720 São Miguel do Oeste";8;6;2
+"421800 Tijucas";2;-;2
+"421820 Timbó";55;29;26
+"421870 Tubarão";25;10;15
+"421950 Xanxerê";10;10;-
+"430040 Alegrete";10;7;3
+"430160 Bagé";14;14;-
+"430210 Bento Gonçalves";10;5;5
+"430300 Cachoeira do Sul";8;8;-
+"430310 Cachoeirinha";8;-;8
+"430450 Canguçu";10;-;10
+"430460 Canoas";20;15;5
+"430463 Capão da Canoa";1;-;1
+"430470 Carazinho";6;-;6
+"430510 Caxias do Sul";24;10;14
+"430610 Cruz Alta";12;10;2
+"430660 Dom Pedrito";10;10;-
+"430680 Encantado";5;5;-
+"430700 Erechim";18;10;8
+"430750 Espumoso";5;5;-
+"430770 Esteio";6;-;6
+"430780 Estrela";10;10;-
+"430790 Farroupilha";8;5;3
+"430800 Faxinal do Soturno";10;10;-
+"430860 Garibaldi";10;-;10
+"430910 Gramado";9;8;1
+"430930 Guaíba";16;-;16
+"431020 Ijuí";10;-;10
+"431140 Lajeado";10;10;-
+"431340 Novo Hamburgo";10;-;10
+"431350 Osório";10;10;-
+"431405 Parobé";10;-;10
+"431410 Passo Fundo";53;43;10
+"431440 Pelotas";31;20;11
+"431490 Porto Alegre";233;233;-
+"431560 Rio Grande";10;10;-
+"431640 Rosário do Sul";5;-;5
+"431710 Sant'Ana do Livramento";10;-;10
+"431680 Santa Cruz do Sul";20;15;5
+"431690 Santa Maria";20;20;-
+"431720 Santa Rosa";25;15;10
+"431750 Santo Ângelo";14;9;5
+"431800 São Borja";2;-;2
+"431830 São Gabriel";5;5;-
+"431870 São Leopoldo";5;5;-
+"431950 São Sebastião do Caí";5;5;-
+"431990 Sapiranga";5;5;-
+"432000 Sapucaia do Sul";7;7;-
+"432080 Soledade";6;6;-
+"432130 Taquari";10;10;-
+"432140 Tenente Portela";5;5;-
+"432150 Torres";5;5;-
+"432160 Tramandaí";6;6;-
+"432240 Uruguaiana";10;-;10
+"432250 Vacaria";4;-;4
+"432260 Venâncio Aires";8;-;8
+"432300 Viamão";10;10;-
+"500060 Amambai";8;-;8
+"500190 Bataguassu";5;5;-
+"500270 Campo Grande";57;57;-
+"500295 Chapadão do Sul";5;5;-
+"500320 Corumbá";10;10;-
+"500325 Costa Rica";10;7;3
+"500330 Coxim";5;-;5
+"500370 Dourados";33;30;3
+"500620 Nova Andradina";8;8;-
+"500630 Paranaíba";10;10;-
+"500660 Ponta Porã";10;10;-
+"500790 Sidrolândia";5;5;-
+"500830 Três Lagoas";30;10;20
+"510025 Alta Floresta";10;-;10
+"510180 Barra do Garças";10;5;5
+"510250 Cáceres";10;5;5
+"510267 Campo Verde";10;-;10
+"510340 Cuiabá";168;158;10
+"510515 Juína";6;6;-
+"510704 Primavera do Leste";10;-;10
+"510760 Rondonópolis";25;20;5
+"510790 Sinop";20;20;-
+"510792 Sorriso";6;6;-
+"510795 Tangará da Serra";13;8;5
+"510840 Várzea Grande";30;30;-
+"520025 Águas Lindas de Goiás";10;-;10
+"520110 Anápolis";15;-;15
+"520140 Aparecida de Goiânia";58;30;28
+"520510 Catalão";31;12;19
+"520870 Goiânia";261;72;189
+"520890 Goiás";5;-;5
+"521150 Itumbiara";19;-;19
+"521190 Jataí";10;10;-
+"521800 Porangatu";24;15;9
+"521880 Rio Verde";20;-;20
+"522045 Senador Canedo";1;-;1
+"522140 Trindade";6;-;6
+"530010 Brasília";285;185;100
+"Total";19825;8764;11061
+ Fonte: Ministério da Saúde - Cadastro Nacional dos Estabelecimentos de Saúde do Brasil - CNES
+ Nota:
+ A partir do processamento de junho de 2012, houve mudança na classificação da natureza e esfera dos estabelecimentos. Com isso, temos que:
+ 
+ Até maio de 2012 estas informações estão disponíveis como "Natureza" e "Esfera Administrativa".
+ De junho de 2012 a outubro de 2015, estão disponíveis tanto como "Natureza" e "Esfera Administrativa", como "Natureza Jurídica" e "Esfera Jurídica".
+ A partir de novembro de 2015, estão disponíveis como "Natureza Jurídica" e "Esfera Jurídica".
+ 

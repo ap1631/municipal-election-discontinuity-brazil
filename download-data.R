@@ -47,7 +47,7 @@ for(i in years){
   dat <- details_mun_zone_local(i)
   dat <- dat %>% select(ANO_ELEICAO, NUM_TURNO,
                 DESCRICAO_ELEICAO,
-                SIGLA_UF, CODIGO_MUNICIPIO,
+                SIGLA_UF, CODIGO_MUNICIPIO, NUMERO_ZONA,
                 CODIGO_CARGO, DESCRICAO_CARGO, QTD_APTOS_TOT,
                 QTD_COMPARECIMENTO, QTD_ABSTENCOES,  QTD_VOTOS_NOMINAIS, QTD_VOTOS_BRANCOS,
                 QTD_VOTOS_NULOS, QTD_VOTOS_LEGENDA)
@@ -56,8 +56,6 @@ for(i in years){
 
 #### Save downloaded data
 save(vote_turnout, file="vote_turnout_2000_2016.rds")
-
-
 
 
 # Voting Results ----------------------------------------------------------
